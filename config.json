@@ -1,11 +1,12 @@
 {
-    "project_name": "Project name",
-    "client_name": "Client name",
-    "review_period": "2 weeks",
-    "date_interval": "October 15 to November 15, 2020",
-    "person_days": "5",
-    "template": "./Readme.md.mustache",
-    "date": "October 2021",
-    "commit_hash": "f0bf99cafcee468a0e4c3aaa74f22df04f1c82b3",
-    "source_repository": "git@github.com:ElrondNetwork/sc-launchpad-rs.git"
+  "client_name": "Elrond",
+  "commit_hash": "f0bf99cafcee468a0e4c3aaa74f22df04f1c82b3",
+  "date": "October 2021",
+  "date_interval": "October 4th to October 15th, 2021",
+  "issues": [],
+  "person_days": "20",
+  "project_name": "Elrond Launchpad",
+  "review_period": "2 weeks",
+  "source_repository": "git@github.com:ElrondNetwork/sc-launchpad-rs.git",
+  "template": "./Readme.md.mustache"
 }
