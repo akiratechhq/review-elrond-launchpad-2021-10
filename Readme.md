@@ -5,7 +5,7 @@
           </span>
           <br />
           <span id="project-value">
-               Project name
+               Elrond Launchpad
           </span>
     </div>
      <div id="details">
@@ -15,7 +15,7 @@
                </span>
                <br />
                <span class="details-value">
-                    Client name
+                    Elrond
                </span>
                <br />
                <span class="splash-title">
@@ -59,11 +59,11 @@
 
 ## Details
 
-- **Client** Client name
+- **Client** Elrond
 - **Date** October 2021
 - **Lead reviewer** Daniel Luca ([@cleanunicorn](https://twitter.com/cleanunicorn))
 - **Reviewers** Daniel Luca ([@cleanunicorn](https://twitter.com/cleanunicorn)), Andrei Simion ([@andreiashu](https://twitter.com/andreiashu))
-- **Repository**: [Project name](git@github.com:ElrondNetwork/sc-launchpad-rs.git)
+- **Repository**: [Elrond Launchpad](git@github.com:ElrondNetwork/sc-launchpad-rs.git)
 - **Commit hash** `f0bf99cafcee468a0e4c3aaa74f22df04f1c82b3`
 - **Technologies**
   - Solidity
@@ -80,9 +80,9 @@
 
 ## Executive summary
 
-This report represents the results of the engagement with **Client name** to review **Project name**.
+This report represents the results of the engagement with **Elrond** to review **Elrond Launchpad**.
 
-The review was conducted over the course of **2 weeks** from **October 15 to November 15, 2020**. A total of **5 person-days** were spent reviewing the code.
+The review was conducted over the course of **2 weeks** from **October 4th to October 15th, 2021**. A total of **20 person-days** were spent reviewing the code.
 
 ### Week 1
 
@@ -94,7 +94,7 @@ The second week was ...
 
 ## Scope
 
-The initial review focused on the [Project name](git@github.com:ElrondNetwork/sc-launchpad-rs.git) repository, identified by the commit hash `f0bf99cafcee468a0e4c3aaa74f22df04f1c82b3`. ...
+The initial review focused on the [Elrond Launchpad](git@github.com:ElrondNetwork/sc-launchpad-rs.git) repository, identified by the commit hash `f0bf99cafcee468a0e4c3aaa74f22df04f1c82b3`. ...
 
 <!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to, re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, costly gas patterns, architectural problems, code readability. -->
 
