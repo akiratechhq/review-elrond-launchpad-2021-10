@@ -11,8 +11,7 @@
 - **Repository**: [{{project_name}}]({{source_repository}})
 - **Commit hash** `{{commit_hash}}`
 - **Technologies**
-  - Solidity
-  - Node.JS
+  - Rust
 
 ## Issues Summary
 
@@ -30,33 +29,37 @@ The review was conducted over the course of **{{review_period}}** from **{{date_
 
 ### Week 1
 
-During the first week, we ...
+During the first week, we familiarized ourselves with the code and the project. Then, we reviewed the code from the beginning to the end of the week.
+
+We set up a few meetings throughout the week to discuss the code and learn how to navigate the codebase. We also discussed the project goals and the project scope.
 
 ### Week 2
 
-The second week was ...
+We continued to keep communication open with the development team while navigating the code and trying out different attack vectors.
+
+We started to focus more on how the `Stage` selection is determined, paying particular attention to how the `get_launch_stage` function can be made to perform an invalid state transition.
+
+We discovered critical and medium severity issues which were fixed in a further pull request provided by the Elrond Team.
+
+We spent the rest of the week focusing on reviewing the above-mentioned pull request changes to ensure no further issues were introduced.
+
 
 ## Scope
 
-The initial review focused on the [{{project_name}}]({{source_repository}}) repository, identified by the commit hash `{{commit_hash}}`. ...
+The initial review focused on the [{{project_name}}]({{source_repository}}) repository, identified by the commit hash `{{commit_hash}}`.
 
-<!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to, re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, costly gas patterns, architectural problems, code readability. -->
+We merged fixes from branch `fixes-after-audit` at commit hash `17810ee9957bf95d42fade8ac7e73267fa7490b1`.
+
 
 **Includes:**
-- GoodContract.sol
 
-**Excludes:**
-- BadContract.sol
+ - code/launchpad/src/random.rs
+ - code/launchpad/src/ticket_status.rs
+ - code/launchpad/src/ongoing_operation.rs
+ - code/launchpad/src/launchpad.rs
+ - code/launchpad/src/launch_stage.rs
+ - code/launchpad/src/setup.rs
 
-## Recommendations
-
-We identified a few possible general improvements that are not security issues during the review, which will bring value to the developers and the community reviewing and using the product.
-
-<!-- ### Increase the number of tests
-
-A good rule of thumb is to have 100% test coverage. This does not guarantee the lack of security problems, but it means that the desired functionality behaves as intended. The negative tests also bring a lot of value because not allowing some actions to happen is also part of the desired behavior.
-
--->
 
 ## Issues
 
