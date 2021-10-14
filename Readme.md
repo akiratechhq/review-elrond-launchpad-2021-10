@@ -81,8 +81,8 @@
 |----------------|:----------:|:------------:|
 |  Informational  |  2  |  0  |
 |  Minor  |  3  |  0  |
-|  Medium  |  2  |  0  |
-|  Major  |  1  |  0  |
+|  Medium  |  1  |  1  |
+|  Major  |  0  |  1  |
 
 ## Executive summary
 
@@ -128,7 +128,7 @@ We merged fixes from branch `fixes-after-audit` at commit hash `17810ee9957bf95d
 
 
 ### [The owner can claim all ticket payments without giving away any rewards](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/issues/4)
-![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Major](https://img.shields.io/static/v1?label=Severity&message=Major&color=ff3b30&style=flat-square)
+![Issue status: Fixed](https://img.shields.io/static/v1?label=Status&message=Fixed&color=5AC8FA&style=flat-square) ![Major](https://img.shields.io/static/v1?label=Severity&message=Major&color=ff3b30&style=flat-square)
 
 **Description**
 
@@ -225,7 +225,7 @@ TBD
 
 
 ### [Contract owner can inadvertently move the stage from `Claim` back to `SelectNewWinners`](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/issues/5)
-![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Medium](https://img.shields.io/static/v1?label=Severity&message=Medium&color=FF9500&style=flat-square)
+![Issue status: Fixed](https://img.shields.io/static/v1?label=Status&message=Fixed&color=5AC8FA&style=flat-square) ![Medium](https://img.shields.io/static/v1?label=Severity&message=Medium&color=FF9500&style=flat-square)
 
 **Description**
 
@@ -235,11 +235,34 @@ In one edge case, when the _Stage_ of the contract is at `LaunchStage::Claim`, t
 
 Example scenario:
 
-1. `total_confirmed_tickets == total_winning_tickets` and we're past the epoch when the `claim_start_epoch` was set. Therefore `get_launch_stage` will return `LaunchStage::Claim`: https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L385-L389
+1. `total_confirmed_tickets == total_winning_tickets` and we're past the epoch when the `claim_start_epoch` was set. Therefore `get_launch_stage` will return `LaunchStage::Claim`: 
 
-1. The owner calls the` refundConfirmedTickets` function to refund a ticket of an already blacklisted address. This will decrement the `total_confirmed_tickets` value by the number of refunded tickets: https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L91-L92
+[code/launchpad/src/launchpad.rs#L385-L389](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L385-L389)
+```
+        if total_confirmed_tickets >= total_winning_tickets {
+            let claim_start_epoch = self.claim_start_epoch().get();
+            if current_epoch >= claim_start_epoch {
+                return LaunchStage::Claim;
+            } else {
+```
 
-1. Now `get_launch_stage` will return `LaunchStage::SelectNewWinners` since the condition `total_confirmed_tickets <= total_winning_tickets` evaluates to `false` and all the other conditions in the function are not met: https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L413-L416
+2. The owner calls the` refundConfirmedTickets` function to refund a ticket of an already blacklisted address. This will decrement the `total_confirmed_tickets` value by the number of refunded tickets: 
+
+[code/launchpad/src/launchpad.rs#L91-L92](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L91-L92)
+```
+        self.total_confirmed_tickets()
+            .update(|confirmed| *confirmed -= nr_refunded_tickets);
+```
+
+3. Now `get_launch_stage` will return `LaunchStage::SelectNewWinners` since the condition `total_confirmed_tickets <= total_winning_tickets` evaluates to `false` and all the other conditions in the function are not met: 
+
+[code/launchpad/src/launchpad.rs#L413-L416](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/a32fe0b2ef7430e9b86d6b22da60b697f8eaac3c/code/launchpad/src/launchpad.rs#L413-L416)
+```
+        }
+
+        LaunchStage::SelectNewWinners
+    }
+```
 
 This is a problem because once the stage reaches `Claim` it should not change back to another stage. Additionally, for the owner of the contract, this transition is not at all obvious and causes issues for the users trying to claim their tickets.
 
@@ -446,7 +469,19 @@ Simplify the method if the additional complexity is never used.
 
 The `TicketStatus` implements the method 
 
- https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/3b1f85b92b7fb451a2d60d634fc13020e9380fbf/code/launchpad/src/ticket_status.rs#L12-L20
+
+[code/launchpad/src/ticket_status.rs#L12-L20](https://github.com/akiratechhq/review-elrond-launchpad-2021-10/blob/3b1f85b92b7fb451a2d60d634fc13020e9380fbf/code/launchpad/src/ticket_status.rs#L12-L20)
+```
+    pub fn is_winning(&self, current_generation: u8) -> bool {
+        if let TicketStatus::Winning { generation } = *self {
+            if generation == current_generation {
+                return true;
+            }
+        }
+
+        false
+    }
+```
 
 However, this method is not used anywhere.
 
