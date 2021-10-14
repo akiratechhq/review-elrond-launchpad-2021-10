@@ -218,7 +218,7 @@ Thus, the owner retrieved all ticket prices and also blocks the users from recei
 
 **Recommendation**
 
-TBD
+_Before we discussed and agreed on a recommendation, a good fix was already published._
 
 
 ---
